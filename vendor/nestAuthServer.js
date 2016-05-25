@@ -15,6 +15,8 @@
  */
 'use strict';
 
+var PORT = 3001;
+
 var express = require('express'),
     session = require('express-session'),
     cookieParser = require('cookie-parser'),
@@ -54,21 +56,17 @@ passport.deserializeUser(function(user, done) {
 /**
   Setup the Express app
 */
+app.listen(PORT);
 app.use(cookieParser('cookie_secret_shh')); // Change for production apps
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(session({ secret: 'session_secret_shh', // Change for production apps
-                  resave: true,
-                  saveUninitialized: true
-                })); 
+app.use(session({
+  secret: 'session_secret_shh', // Change for production apps
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
-
-/**
-  Server our static jQuery app.
-*/
-app.use(express.static(__dirname + '/app'));
-app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 /**
   Listen for calls and redirect the user to the Nest OAuth
@@ -78,16 +76,17 @@ app.get('/auth/nest', passport.authenticate('nest'));
 
 /**
   Upon return from the Nest OAuth endpoint, grab the user's
-  accessToken and set a cookie so jQuery can access, then
+  accessToken and set a cookie, then
   return the user back to the root app.
 */
-app.get('/auth/nest/callback',
-        passport.authenticate('nest', { }),
-        function(req, res) {
-          res.cookie('nest_token', req.user.accessToken);
-          res.redirect('/');
-        }
-       );
+app.get(
+  '/auth/nest/callback',
+  passport.authenticate('nest', { }),
+  function(req, res) {
+    res.cookie('nest_token', req.user.accessToken);
+    res.redirect('/');
+  }
+);
 
 /**
   Export the app

@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+    "nest": "cross-env NEST_ID=f618ab51-c4d1-4c64-b7d5-24b5ddd8bcf1 NEST_SECRET=6XGiQdBXPgOzd8cNvaIAyqToa node vendor/nestAuthServer.js",
     "build": "ember build",
     "start": "ember server",
     "test": "ember test"
@@ -19,7 +20,10 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "body-parser": "^1.15.1",
     "broccoli-asset-rev": "^2.4.2",
+    "cookie-parser": "^1.4.2",
+    "cross-env": "^1.0.8",
     "ember-ajax": "0.7.1",
     "ember-cli": "2.5.1",
     "ember-cli-app-version": "^1.0.0",
@@ -38,6 +42,10 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "emberfire": "1.6.6",
-    "loader.js": "^4.0.1"
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "loader.js": "^4.0.1",
+    "passport": "^0.3.2",
+    "passport-nest": "^1.0.0"
   }
 }
