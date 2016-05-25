@@ -4,8 +4,8 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'nest-test-app',
     environment: environment,
-    contentSecurityPolicy: { 'connect-src': "'self' https://auth.firebase.com wss://*.firebaseio.com" },
-    firebase: 'https://YOUR-FIREBASE-NAME.firebaseio.com/',
+    contentSecurityPolicy: { 'connect-src': "'self' wss://developer-api.nest.com" },
+    firebase: 'https://developer-api.nest.com/',
     baseURL: '/',
     locationType: 'auto',
     EmberENV: {
