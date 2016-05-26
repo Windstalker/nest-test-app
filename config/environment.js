@@ -18,6 +18,8 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+      NEST_ID: 'f618ab51-c4d1-4c64-b7d5-24b5ddd8bcf1',
+      NEST_SECRET: '6XGiQdBXPgOzd8cNvaIAyqToa'
     }
   };
 
