@@ -17,7 +17,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        exclude: /\/node_modules\//,
+        exclude: /\/node_modules\/|vendor\//,
         include: path.join(__dirname, 'src'),
         loader: 'babel',
         query: {
@@ -27,6 +27,7 @@ module.exports = {
       },
       {test: /\.css$/, loader: 'style-loader!css-loader'},
       {test: /\.html$/, loader: 'html'},
+      {test: /\.json$/, loader: 'json'},
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loader: 'url?limit=10000&name=images/[name].[ext]'
@@ -46,7 +47,8 @@ module.exports = {
     modules: ['src', 'node_modules']
   },
 
-  devtool: 'source-map',
+  target: 'web',
+  devtool: 'cheap-module-source-map',
 
   stats: {
     colors: true

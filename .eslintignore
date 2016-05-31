@@ -1,3 +1,2 @@
 node_modules
-webpack.config.dev.js
-webpack.config.prod.js
+webpack.config.js

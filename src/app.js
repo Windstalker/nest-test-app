@@ -9,6 +9,8 @@ export default Application.extend({
   },
   onStart() {
     console.log('on app start');
-    history.start();
+    history.start({
+      pushState: true
+    });
   }
 });
