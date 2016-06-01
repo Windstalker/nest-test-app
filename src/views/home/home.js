@@ -1,4 +1,4 @@
-import {ItemView} from 'backbone.marionette';
+import { ItemView } from 'backbone.marionette';
 import _ from 'underscore';
 import template from './home.html';
 
@@ -9,5 +9,5 @@ export default ItemView.extend({
   },
   onBeforeShow() {
 
-  }
+  },
 });

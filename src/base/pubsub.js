@@ -1,4 +1,4 @@
-import {radio} from 'backbone.wreqr';
+import { radio } from 'backbone.wreqr';
 
-export let appChannel = radio.channel('global');
-export let routerChannel = radio.channel('router');
+export const appChannel = radio.channel('global');
+export const routerChannel = radio.channel('router');

@@ -17,7 +17,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        exclude: /\/node_modules\/|vendor\//,
+        exclude: /\/node_modules\//,
         include: path.join(__dirname, 'src'),
         loader: 'babel',
         query: {
@@ -48,7 +48,7 @@ module.exports = {
   },
 
   target: 'web',
-  devtool: 'cheap-module-source-map',
+  devtool: 'inline-source-map',
 
   stats: {
     colors: true

@@ -24,7 +24,7 @@ var express = require('express'),
   passport = require('passport'),
   bodyParser = require('body-parser'),
   NestStrategy = require('passport-nest').Strategy,
-  constants = require('../models/constants.json');
+  constants = require('./models/constants.json');
 
 /**
   Setup Passport to use the NestStrategy,
@@ -84,7 +84,6 @@ app.get(
   '/auth/nest/callback',
   passport.authenticate('nest', { }),
   function (req, res) {
-    console.log(req);
     res.cookie('nest_token', req.user.accessToken);
     res.redirect('/');
   }

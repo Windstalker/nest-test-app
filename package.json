@@ -12,7 +12,7 @@
     "build:webpack": "webpack -p --progress --colors",
     "build": "npm run build:html && npm run build:webpack",
     "dev": "npm run build:html && webpack-dev-server --content-base ./dist/ --hot --port 4000 --history-api-fallback --inline",
-    "auth_server": "node src/vendor/nestAuthServer.js"
+    "auth_server": "node src/server.js"
   },
   "author": "",
   "license": "",
@@ -39,10 +39,9 @@
     "cross-env": "^1.0.8",
     "css-loader": "^0.23.1",
     "eslint": "^2.11.1",
-    "eslint-config-airbnb": "^9.0.1",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-import": "^1.8.1",
-    "eslint-plugin-jsx-a11y": "^1.2.2",
-    "eslint-plugin-react": "^5.1.1",
     "exports-loader": "^0.6.3",
     "expose-loader": "^0.7.1",
     "express": "^4.13.4",

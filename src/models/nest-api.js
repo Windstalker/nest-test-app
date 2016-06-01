@@ -28,11 +28,12 @@ export const NestFB = MnObject.extend({
 export const NestAuth = Model.extend({
   url: 'https://api.home.nest.com/oauth2/access_token',
   authorize(code) {
-    return this.sync('read', {
+    return this.sync('create', this, {
       data: {
         code,
         client_id: NEST_ID,
         client_secret: NEST_SECRET,
+        grant_type: 'authorization_code',
       },
     });
   },
