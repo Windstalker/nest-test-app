@@ -1,6 +1,7 @@
 import { Model } from 'backbone';
 import { Object as MnObject } from 'backbone.marionette';
 import Firebase from 'firebase';
+import Cookie from 'js-cookie';
 import constants from './constants.json';
 
 const { NEST_ID, NEST_SECRET } = constants;
@@ -25,8 +26,19 @@ export const NestFB = MnObject.extend({
   },
 });
 
-export const NestAuth = Model.extend({
+export const NestAuthModel = Model.extend({
   url: 'https://api.home.nest.com/oauth2/access_token',
+  defaults: {
+    access_token: '',
+  },
+  checkAccessToken() {
+    const token = Cookie.get('nest_token');
+    if (typeof token === 'string') {
+      this.set('access_token', token);
+      return token;
+    }
+    return false;
+  },
   authorize(code) {
     return this.sync('create', this, {
       data: {
@@ -41,6 +53,6 @@ export const NestAuth = Model.extend({
 
 export const RedirectUrl = Model.extend({
   defaults: {
-    nestAuthServer: 'http://localhost:3001/auth/nest/',
+    nestAuthServer: '/auth/nest/',
   },
 });

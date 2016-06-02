@@ -3,16 +3,20 @@ var yargs = require('yargs');
 var path = require('path');
 
 module.exports = {
-  entry: {
-    src: path.join(__dirname, 'src', 'index.js')
-  },
+  entry: [
+    'eventsource-polyfill', // necessary for hot reloading with IE
+    'webpack-hot-middleware/client',
+    path.join(__dirname, 'src', 'index.js')
+  ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
     sourceMapFilename: 'bundle.map',
     publicPath: '/'
   },
-
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+  ],
   module: {
     loaders: [
       {

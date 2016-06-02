@@ -12,7 +12,7 @@
     "build:webpack": "webpack -p --progress --colors",
     "build": "npm run build:html && npm run build:webpack",
     "dev": "npm run build:html && webpack-dev-server --content-base ./dist/ --hot --port 4000 --history-api-fallback --inline",
-    "auth_server": "node src/server.js"
+    "dev2": "npm run build:html && node server.js"
   },
   "author": "",
   "license": "",
@@ -21,8 +21,10 @@
     "backbone.marionette": "^2.4.6",
     "backbone.wreqr": "^1.3.7",
     "bootstrap": "^3.3.5",
+    "express-http-proxy": "^0.6.0",
     "firebase": "^1.1.3",
     "jquery": "^2.1.4",
+    "js-cookie": "^2.1.2",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
@@ -42,6 +44,7 @@
     "eslint-config-airbnb-base": "^3.0.1",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-import": "^1.8.1",
+    "eventsource-polyfill": "^0.9.6",
     "exports-loader": "^0.6.3",
     "expose-loader": "^0.7.1",
     "express": "^4.13.4",
@@ -57,7 +60,9 @@
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
+    "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1",
+    "webpack-hot-middleware": "^2.10.0",
     "yargs": "^4.2.0"
   }
 }

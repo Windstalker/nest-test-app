@@ -1,7 +1,7 @@
 import { Object as MnObject, Region, RegionManager } from 'backbone.marionette';
 import { history } from 'backbone';
 
-import { NestFB, NestAuth } from 'models/nest-api';
+import { NestFB, NestAuthModel } from 'models/nest-api';
 
 import MainView from 'views/main/main';
 import LoginView from 'views/login/login';
@@ -10,7 +10,7 @@ import HomeView from 'views/home/home';
 import { appChannel } from 'base/pubsub';
 
 export default MnObject.extend({
-  auth: new NestAuth(),
+  auth: new NestAuthModel(),
   nestFB: new NestFB(),
   initialize() {
     this.mainView = new MainView();
@@ -27,9 +27,9 @@ export default MnObject.extend({
     appChannel.commands.setHandler('nest-login', this.onNestLogin, this);
   },
   onRoute(fn, route, params) {
-    if (route !== 'login' && !this.auth.get('access_token')) {
+    if (route !== 'login' && !this.auth.checkAccessToken()) {
       console.log('redirect to login');
-      history.navigate('login', true);
+      // history.navigate('login', true);
     }
     appChannel.vent.trigger('route:changed', route, params);
   },

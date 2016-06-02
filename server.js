@@ -15,7 +15,7 @@
  */
 'use strict';
 
-var PORT = 3001;
+var PORT = 3000;
 
 var express = require('express'),
   session = require('express-session'),
@@ -24,7 +24,12 @@ var express = require('express'),
   passport = require('passport'),
   bodyParser = require('body-parser'),
   NestStrategy = require('passport-nest').Strategy,
-  constants = require('./models/constants.json');
+  constants = require('./src/models/constants.json');
+
+var path = require('path');
+var webpack = require('webpack');
+var config = require('./webpack.config');
+var compiler = webpack(config);
 
 /**
   Setup Passport to use the NestStrategy,
@@ -35,8 +40,8 @@ var express = require('express'),
 passport.use(new NestStrategy({
   clientID: constants.NEST_ID,
   clientSecret: constants.NEST_SECRET,
-}
-));
+  callbackURL: "http://localhost:" + PORT + "/auth/nest/callback"
+}));
 
 /**
   No user data is available in the Nest OAuth
@@ -58,6 +63,15 @@ passport.deserializeUser(function (user, done) {
   Setup the Express app
 */
 app.listen(PORT);
+
+/** Webpack dev */
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath
+}));
+
+app.use(require('webpack-hot-middleware')(compiler));
+
 app.use(cookieParser('cookie_secret_shh')); // Change for production apps
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -82,12 +96,24 @@ app.get('/auth/nest', passport.authenticate('nest'));
 */
 app.get(
   '/auth/nest/callback',
-  passport.authenticate('nest', { }),
+  passport.authenticate('nest', {
+    failureRedirect: '/login'
+  }),
   function (req, res) {
-    res.cookie('nest_token', req.user.accessToken);
-    res.redirect('/');
+    var token = req.user.accessToken;
+    res.cookie('nest_token', token);
+    res.redirect('/home?access_token=' + token);
   }
 );
+
+app.get(
+  '/auth/nest/proxy'
+);
+
+app.get('*', (req, res) => {
+  console.log(req.url);
+  res.sendFile(path.join(__dirname, 'src', 'index.html'));
+});
 
 /**
   Export the app
