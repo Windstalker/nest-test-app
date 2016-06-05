@@ -16,14 +16,9 @@ export default ItemView.extend({
   },
   serializeData() {
     const { nestAuthServer } = this.model.toJSON();
-    // const encodedRedirectUrl = encodeURIComponent(location.href);
     return {
       redirect: `${nestAuthServer}`,
     };
-  },
-  onRender() {
-    console.log(this.ui.form);
-    // this.ui.form.on('submit', (ev) => ev.preventDefault());
   },
   logIn(ev) {
     ev.preventDefault();

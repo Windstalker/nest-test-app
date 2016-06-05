@@ -64,13 +64,15 @@ passport.deserializeUser(function (user, done) {
 */
 app.listen(PORT);
 
-/** Webpack dev */
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath
-}));
+if (process.env.NODE_ENV === 'development') {
+  /** Webpack dev */
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: config.output.publicPath
+  }));
 
-app.use(require('webpack-hot-middleware')(compiler));
+  app.use(require('webpack-hot-middleware')(compiler));
+}
 
 app.use(cookieParser('cookie_secret_shh')); // Change for production apps
 app.use(bodyParser.urlencoded({ extended: true }));

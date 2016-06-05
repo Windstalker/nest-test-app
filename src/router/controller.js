@@ -27,9 +27,13 @@ export default MnObject.extend({
     appChannel.commands.setHandler('nest-login', this.onNestLogin, this);
   },
   onRoute(fn, route, params) {
-    if (route !== 'login' && !this.auth.checkAccessToken()) {
+    const token = this.auth.checkAccessToken();
+    if (token) {
+      this.nestFB.auth(token);
+    }
+    if (route !== 'login' && !token) {
       console.log('redirect to login');
-      // history.navigate('login', true);
+      history.navigate('login', true);
     }
     appChannel.vent.trigger('route:changed', route, params);
   },

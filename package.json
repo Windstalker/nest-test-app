@@ -11,8 +11,7 @@
     "build:html": "npm run clean && mkdir dist && cp ./src/index.html ./dist/",
     "build:webpack": "webpack -p --progress --colors",
     "build": "npm run build:html && npm run build:webpack",
-    "dev": "npm run build:html && webpack-dev-server --content-base ./dist/ --hot --port 4000 --history-api-fallback --inline",
-    "dev2": "npm run build:html && node server.js"
+    "dev": "npm run build:html && cross-env NODE_ENV=development node server.js"
   },
   "author": "",
   "license": "",
