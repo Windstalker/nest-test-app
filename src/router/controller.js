@@ -45,7 +45,11 @@ export default MnObject.extend({
     this.mainView.showChildView('main', new LoginView());
   },
   showHomePage() {
-    this.mainView.showChildView('main', new HomeView());
+    const { alarms, structures } = this.nestFB;
+    this.mainView.showChildView('main', new HomeView({
+      alarms,
+      structures,
+    }));
   },
   onRouteNotFound() {
     this.onRouteDefault();

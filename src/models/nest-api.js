@@ -1,4 +1,4 @@
-import { Model } from 'backbone';
+import { Model, Collection } from 'backbone';
 import Mn from 'backbone.marionette';
 import Firebase from 'firebase';
 import Cookie from 'js-cookie';
@@ -6,11 +6,29 @@ import Cookie from 'js-cookie';
 
 // const { NEST_ID, NEST_SECRET } = constants;
 
-export const NestFB = Model.extend({
+export const Structure = Model.extend({
+  idAttribute: 'structure_id',
+});
+
+export const Device = Model.extend({
+  idAttribute: 'device_id',
+});
+
+export const Structures = Collection.extend({
+  model: Structure,
+});
+
+export const Devices = Collection.extend({
+  model: Device,
+});
+
+export const NestFB = Mn.Object.extend({
   firebaseUrl: 'wss://developer-api.nest.com',
   initialize() {
     const dataRef = new Firebase(this.firebaseUrl);
     this.dataRef = dataRef;
+    this.structures = new Structures();
+    this.alarms = new Devices();
     this.bindFirebaseEvents();
     return this;
   },
@@ -31,42 +49,24 @@ export const NestFB = Model.extend({
   },
   onNestDataReceived(snapshot) {
     const smokeCOAlarms = snapshot.child('devices/smoke_co_alarms');
-    const smokeCOAlarmsVal = smokeCOAlarms.val();
-    let structures = snapshot.child('structures');
-    structures = Object.keys(structures.val())
-      .map((id) => structures.child(id).val());
+    // const smokeCOAlarmsVal = smokeCOAlarms.val();
+    const structures = snapshot.child('structures');
 
-    const alarms = Object.keys(smokeCOAlarmsVal).map((id) => {
-      const alarm = smokeCOAlarms.child(id);
-      this.listenForSmokeAlarms(alarm);
-      this.listenForCOAlarms(alarm);
-      this.listenForBatteryAlarms(alarm);
-      return alarm.val();
+    structures.ref().on('value', (state) => {
+      const structuresState = state.val();
+      this.structures.reset(
+        Object.keys(structuresState).map((id) => structuresState[id])
+      );
+      console.log(this.structures.toJSON());
     });
 
-    this.set('structures', structures);
-    this.set('alarms', alarms);
-
-    console.log(this.toJSON());
-  },
-  listenForSmokeAlarms(alarm) {
-    alarm.child('smoke_alarm_state').ref().on('value', () => {
-      this.triggerAlarmEvent('smoke:alarm', alarm);
+    smokeCOAlarms.ref().on('value', (state) => {
+      const alarmsState = state.val();
+      this.alarms.reset(
+        Object.keys(alarmsState).map((id) => alarmsState[id])
+      );
+      console.log(this.alarms.toJSON());
     });
-  },
-  listenForCOAlarms(alarm) {
-    alarm.child('co_alarm_state').ref().on('value', () => {
-      this.triggerAlarmEvent('co:alarm', alarm);
-    });
-  },
-  listenForBatteryAlarms(alarm) {
-    alarm.child('battery_health').ref().on('value', () => {
-      this.triggerAlarmEvent('battery:alarm', alarm);
-    });
-  },
-  triggerAlarmEvent(eventName, alarm) {
-    const payload = alarm.val();
-    Mn.triggerMethodOn(this, eventName, payload);
   },
   onDestroy() {
     this.dataRef.off('value');
