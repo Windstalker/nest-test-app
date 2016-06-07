@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var yargs = require('yargs');
 var path = require('path');
+var autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: [
@@ -29,7 +30,15 @@ module.exports = {
           plugins: ['transform-runtime']
         }
       },
-      {test: /\.css$/, loader: 'style-loader!css-loader'},
+      // Styles
+      {
+        test: /\.scss$/,
+        loader: 'style!css!postcss!sass'
+      },
+      {
+        test: /\.css$/,
+        loader: 'style!css!postcss'
+      },
       {test: /\.html$/, loader: 'html'},
       {test: /\.json$/, loader: 'json'},
       {
@@ -44,6 +53,7 @@ module.exports = {
       {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml&name=fonts/[name].[ext]'}
     ]
   },
+  postcss: [autoprefixer({ browsers: ['last 2 versions'] })],
 
   resolve: {
     extensions: ['', '.js'],

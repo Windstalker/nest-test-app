@@ -1,5 +1,6 @@
-import {Application} from 'backbone.marionette';
-import {history} from 'backbone';
+import 'skeleton-scss/scss/skeleton.scss';
+import { Application } from 'backbone.marionette';
+import { history } from 'backbone';
 import Router from 'router/router';
 
 export default Application.extend({
@@ -10,7 +11,7 @@ export default Application.extend({
   onStart() {
     console.log('on app start');
     history.start({
-      pushState: true
+      pushState: true,
     });
-  }
+  },
 });
