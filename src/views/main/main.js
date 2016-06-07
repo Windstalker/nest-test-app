@@ -4,6 +4,7 @@ import template from './main.html';
 
 export default LayoutView.extend({
   template: _.template(template),
+  className: 'block white',
   regions: {
     main: '.main-container',
   },

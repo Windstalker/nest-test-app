@@ -1,1 +1,12 @@
 <h4><%= name %></h4>
+<div class="device-details row">
+  <div class="device-details-status <%= smoke_alarm_state %>">
+    <span>Smoke <i></i></span>
+  </div>
+  <div class="device-details-status <%= co_alarm_state %>">
+    <span>CO <i></i></span>
+  </div>
+  <div class="device-details-status <%= battery_health %>">
+    <span>Battery <i></i></span>
+  </div>
+</div>

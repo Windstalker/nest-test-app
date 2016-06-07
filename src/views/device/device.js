@@ -4,5 +4,9 @@ import template from './device.html';
 
 export default ItemView.extend({
   template: _.template(template),
-  className: 'device-wrapper',
+  className: 'device-wrapper block white',
+  onBeforeRender() {
+    const { ui_color_state } = this.serializeData();
+    this.$el.addClass(`alert-${ui_color_state}`);
+  },
 });

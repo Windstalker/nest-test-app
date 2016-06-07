@@ -37,15 +37,17 @@ export const NestFB = Mn.Object.extend({
       Mn.triggerMethodOn(this, 'nest:data:received', snapshot));
   },
   auth(token) {
-    const pr = this.dataRef.authWithCustomToken(token, (error, result) => {
-      if (error) {
-        console.log('auth error');
-      }
-      if (result) {
-        console.log('authenticated');
-      }
+    const p = new Promise((resolve, reject) => {
+      this.dataRef.authWithCustomToken(token, (error, result) => {
+        if (error) {
+          reject('auth error');
+        }
+        if (result) {
+          resolve('authenticated');
+        }
+      });
     });
-    return pr;
+    return p;
   },
   onNestDataReceived(snapshot) {
     const smokeCOAlarms = snapshot.child('devices/smoke_co_alarms');
@@ -57,7 +59,6 @@ export const NestFB = Mn.Object.extend({
       this.structures.reset(
         Object.keys(structuresState).map((id) => structuresState[id])
       );
-      console.log(this.structures.toJSON());
     });
 
     smokeCOAlarms.ref().on('value', (state) => {
@@ -65,7 +66,6 @@ export const NestFB = Mn.Object.extend({
       this.alarms.reset(
         Object.keys(alarmsState).map((id) => alarmsState[id])
       );
-      console.log(this.alarms.toJSON());
     });
   },
   onDestroy() {
@@ -87,16 +87,10 @@ export const NestAuthModel = Model.extend({
     }
     return false;
   },
-  // authorize(code) {
-  //   return this.sync('create', this, {
-  //     data: {
-  //       code,
-  //       client_id: NEST_ID,
-  //       client_secret: NEST_SECRET,
-  //       grant_type: 'authorization_code',
-  //     },
-  //   });
-  // },
+  clearToken() {
+    this.set('access_token', '');
+    Cookie.remove('nest_token');
+  },
 });
 
 export const RedirectUrl = Model.extend({

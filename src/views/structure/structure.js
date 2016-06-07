@@ -7,9 +7,8 @@ export default CompositeView.extend({
   template: _.template(template),
   childView: DeviceView,
   childViewContainer: '.devices-list',
-  className: 'structure_wrapper',
+  className: 'structure-wrapper',
   initialize(options) {
-    console.log(options.alarms);
     this.collection = options.alarms;
   },
 });

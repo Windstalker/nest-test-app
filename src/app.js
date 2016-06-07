@@ -1,10 +1,11 @@
 import 'skeleton-scss/scss/skeleton.scss';
+import 'styles/main.scss';
 import { Application } from 'backbone.marionette';
 import { history } from 'backbone';
 import Router from 'router/router';
 
 export default Application.extend({
-  initialize(options) {
+  initialize() {
     this.appRouter = new Router();
     console.log('app init');
   },
@@ -15,3 +16,8 @@ export default Application.extend({
     });
   },
 });
+
+// HMR
+if (module.hot) {
+  module.hot.accept();
+}

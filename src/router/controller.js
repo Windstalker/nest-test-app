@@ -1,4 +1,4 @@
-import { Object as MnObject, Region, RegionManager } from 'backbone.marionette';
+import { Object as MnObject, RegionManager } from 'backbone.marionette';
 import { history } from 'backbone';
 
 import { NestFB, NestAuthModel } from 'models/nest-api';
@@ -24,22 +24,27 @@ export default MnObject.extend({
     this.setChannelHandlers();
   },
   setChannelHandlers() {
-    appChannel.commands.setHandler('nest-login', this.onNestLogin, this);
+
   },
   onRoute(fn, route, params) {
     const token = this.auth.checkAccessToken();
     if (token) {
-      this.nestFB.auth(token);
+      this.nestFB.auth(token).then(null, () => {
+        this.auth.clearToken();
+        this.redirectNotAuthorized();
+      });
     }
     if (route !== 'login' && !token) {
-      console.log('redirect to login');
-      history.navigate('login', true);
+      this.redirectNotAuthorized();
     }
     appChannel.vent.trigger('route:changed', route, params);
   },
   onRouteDefault() {
-    console.log('default route');
     this.showHomePage();
+  },
+  redirectNotAuthorized() {
+    console.log('redirect to login');
+    history.navigate('login', true);
   },
   showLoginPage() {
     this.mainView.showChildView('main', new LoginView());
@@ -53,11 +58,5 @@ export default MnObject.extend({
   },
   onRouteNotFound() {
     this.onRouteDefault();
-  },
-  onNestLogin(code) {
-    const { auth } = this;
-    auth.authorize(code).then(() => {
-      history.navigate('home', true);
-    });
   },
 });

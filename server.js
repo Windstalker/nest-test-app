@@ -104,7 +104,8 @@ app.get(
   function (req, res) {
     var token = req.user.accessToken;
     res.cookie('nest_token', token);
-    res.redirect('/home?access_token=' + token);
+    res.redirect('/home');
+    // res.redirect('/home?access_token=' + token);
   }
 );
 
@@ -113,7 +114,6 @@ app.get(
 );
 
 app.get('*', (req, res) => {
-  console.log(req.url);
   res.sendFile(path.join(__dirname, 'src', 'index.html'));
 });
 
