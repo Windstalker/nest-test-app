@@ -1,0 +1,108 @@
+@import url(https://fonts.googleapis.com/css?family=Teko:400,500,700);
+
+$white: #FFF;
+$black: #000;
+$white-smoke: #ECECEC;
+$iron: #DADFE1;
+$concrete: #B2BABB;
+$madison: #2C3E50;
+$lynch: #6C7A89;
+$hummingbird: #C5EFF7;
+$spray: #81CFE0;
+$pictonblue: #3498DB;
+
+$alert-red: #D91E18;
+$alert-yellow: #F4D03F;
+$alert-green: #3FC380;
+
+$state-emergency: transparentize($alert-red, 0.4);
+$state-warning: transparentize($alert-yellow, 0.4);
+$state-ok: transparentize($alert-green, 0.4);
+$state-replace: transparentize($iron, 0.4);
+
+body {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.8rem;
+  line-height: 1.6;
+  color: $madison;
+  background: $hummingbird;
+}
+
+header {
+  text-align: center;
+  color: $pictonblue;
+  overflow: hidden;
+  height: auto;
+}
+
+.block {
+  padding: 1rem 1.5rem;
+  margin: 0.5rem 0.5rem 1rem;
+  border: 1px solid $black;
+  border-radius: 0.6rem;
+  &.white {
+    background: $white;
+    border-color: $white-smoke;
+  }
+}
+
+.login-link {
+  font-size: 2.4rem;
+}
+
+.structure-wrapper {
+  .structure-name {
+    color: $lynch;
+    padding: 0 1rem;
+    background: linear-gradient(160deg, $spray 0%,$white 75%);
+  }
+}
+
+.device-wrapper {
+  $details-height: 2.4rem;
+  position: relative;
+  border-width: 0.2rem;
+  margin-bottom: $details-height;
+
+  &.alert-red {
+    border-color: $alert-red
+  }
+  &.alert-yellow {
+    border-color: $alert-yellow
+  }
+  &.alert-green {
+    border-color: $alert-green
+  }
+  &.offline {
+    border-color: $white-smoke;
+  }
+  .device-details {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: $details-height;
+    &-status {
+      width: (100%/3);
+      float: left;
+      padding: 0 1rem;
+      box-sizing: border-box;
+      &.ok {
+        background: $state-ok;
+      }
+      &.warning {
+        background: $state-warning;
+      }
+      &.emergency {
+        background: $state-emergency;
+      }
+      &.replace {
+        background: $state-replace;
+        color: $alert-red;
+      }
+      .offline & {
+        background: $white-smoke;
+      }
+    }
+  }
+}
